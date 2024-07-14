@@ -43,6 +43,17 @@ app.patch("/api/:id", async (req, res) => {
   }
 });
 
+app.get("/api/:id/all", async (req, res) => {
+  try {
+    const { rows } = await db.query("SELECT * FROM point WHERE id != $1", [
+      req.params.id,
+    ]);
+    res.status(200).json(rows);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 // delete a point
 app.delete("/api/:id", async (req, res) => {
   try {

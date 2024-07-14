@@ -8,13 +8,17 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { useNavigate } from "react-router-dom";
+import DistancePoints from "../models/PointsClass";
 
 function EditPointPage() {
   const [data, setData] = useState([]);
   const { id } = useParams();
   const [name, setName] = useState("");
+  const [OtherPoints, setOtherPoints] = useState([]);
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
+  const [nearstPoints, setNearstPoints] = useState([]);
+  const [farthestPoints, setFarthestPoints] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
     axios
@@ -24,6 +28,21 @@ function EditPointPage() {
         setName(res.data[0].name);
         setX(res.data[0].x);
         setY(res.data[0].y);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/api/${id}/all`)
+      .then((res) => {
+        const points = res.data.map(
+          (point) => new DistancePoints(point.name, point.x, point.y)
+        );
+        setOtherPoints(points);
+        //console.log(OtherPoints);
       })
       .catch((err) => {
         console.log(err);
@@ -65,6 +84,30 @@ function EditPointPage() {
         console.log(err);
       });
   };
+  const calculateDistance = (x1, y1, x2, y2) => {
+    return (
+      Math.round(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)) * 10) /
+      10
+    );
+  };
+
+  const DistanceBewteenPoints = (x1, y1) => {
+    for (let i = 0; i < OtherPoints.length; i++) {
+      OtherPoints[i].DistanceBewteenPoints = calculateDistance(
+        x1,
+        y1,
+        OtherPoints[i].x,
+        OtherPoints[i].y
+      );
+      console.log(OtherPoints[i].DistanceBewteenPoints);
+    }
+    OtherPoints.sort(
+      (a, b) => a.DistanceBewteenPoints - b.DistanceBewteenPoints
+    );
+    setNearstPoints(OtherPoints.slice(0, 3));
+    setFarthestPoints(OtherPoints.slice(-3));
+  };
+  DistanceBewteenPoints(x,y);
 
   const NavigateBack = () => {
     navigate(`/`);
@@ -135,6 +178,7 @@ function EditPointPage() {
           </Row>
         </Container>
       </Form>
+      <Container></Container>
     </div>
   );
 }
