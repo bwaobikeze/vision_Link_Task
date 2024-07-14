@@ -2,6 +2,7 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from "./components/HomePage";
 import EditPointPage from "./components/EditPointPage";
+import AddNewPoint from "./components/AddNewPoint";
 
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
       <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/edit/:id" element={<EditPointPage />} />
+          <Route path="/edit" element={<AddNewPoint />} />
 
       </Routes>
       </Router>

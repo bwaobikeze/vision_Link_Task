@@ -25,7 +25,7 @@ function HomePage() {
   return (
     <div className="App">
       <header>
-        <h1>React Project</h1>
+        <h1>Plane Points</h1>
       </header>
       <Table striped bordered hover>
         <thead>

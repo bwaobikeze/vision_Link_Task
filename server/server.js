@@ -43,11 +43,25 @@ app.patch("/api/:id", async (req, res) => {
   }
 });
 
+// delete a point
 app.delete("/api/:id", async (req, res) => {
   try {
     const { rows } = await db.query("DELETE FROM point WHERE id = $1", [
       req.params.id,
     ]);
+    res.status(200).json(rows);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+// add a new point
+app.post("/api/edit", async (req, res) => {
+  try {
+    const { rows } = await db.query(
+      "INSERT INTO point (name, x, y) VALUES ($1, $2, $3) RETURNING *",
+      [req.body.name, req.body.x, req.body.y]
+    );
     res.status(200).json(rows);
   } catch (error) {
     res.status(500).json(error);

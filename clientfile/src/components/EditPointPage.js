@@ -4,51 +4,72 @@ import { useParams } from "react-router-dom";
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import { useNavigate } from "react-router-dom";
 
 function EditPointPage() {
   const [data, setData] = useState([]);
   const { id } = useParams();
-  const [ name, setName ] = useState("");
-  const [ x, setX ] = useState(0);
-  const [ y, setY ] = useState(0);
+  const [name, setName] = useState("");
+  const [x, setX] = useState(0);
+  const [y, setY] = useState(0);
+  const navigate = useNavigate();
   useEffect(() => {
     axios
       .get(`http://localhost:5000/api/${id}`)
       .then((res) => {
-          setData(res.data);
-          setName(res.data[0].name);
-          setX(res.data[0].x);
-          setY(res.data[0].y);
-          
+        setData(res.data);
+        setName(res.data[0].name);
+        setX(res.data[0].x);
+        setY(res.data[0].y);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
 
-    // checking if the data has been changed
+  // checking if the data has been changed
   const saveChanges = () => {
-      const updatedData = {};
-      
-      if(name !== data.name) {
-          updatedData.name = name;
-      }
-        if(x !== data.x) {
-            updatedData.x = x;
-      }
-        if(y !== data.y) {
-            updatedData.y = y;
-      }
-      axios.patch(`http://localhost:5000/api/${id}`, updatedData)
-        .then((res) => {
-            console.log(res.data);
-        })
-        .catch((err) => {
-            console.log(err);
-        }
-        );
+    const updatedData = {};
 
+    if (name !== data.name) {
+      updatedData.name = name;
+    }
+    if (x !== data.x) {
+      updatedData.x = x;
+    }
+    if (y !== data.y) {
+      updatedData.y = y;
+    }
+    axios
+      .patch(`http://localhost:5000/api/${id}`, updatedData)
+      .then((res) => {
+        console.log(res.data);
+        navigate(`/`);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
+
+  const DeletePoint = () => {
+    axios
+      .delete(`http://localhost:5000/api/${id}`)
+      .then((res) => {
+        navigate(`/`);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const NavigateBack = () => {
+    navigate(`/`);
+  };
+
   return (
     <div className="App">
       <header>
@@ -94,11 +115,25 @@ function EditPointPage() {
             ))}
           </tbody>
         </Table>
-        <div>
-          <Button variant="primary" onClick={saveChanges}>
-            Save
-          </Button>
-        </div>
+        <Container>
+          <Row>
+            <Col>
+              <Button variant="primary" onClick={NavigateBack}>
+                Back
+              </Button>
+            </Col>
+            <Col>
+              <Button variant="primary" onClick={saveChanges}>
+                Save
+              </Button>
+            </Col>
+            <Col>
+              <Button variant="primary" onClick={DeletePoint}>
+                Delete
+              </Button>
+            </Col>
+          </Row>
+        </Container>
       </Form>
     </div>
   );
