@@ -72,6 +72,18 @@ function EditPointPage() {
       });
   };
 
+  const CheckIfDataIsValid = () => {
+    if (name === "" || isNaN(x) || isNaN(y)) {
+      return false;
+    }
+    for (let i = 0; i < OtherPoints.length; i++) {
+      if (name === OtherPoints[i].name) {
+        return false;
+      }
+    }
+    return true;
+  };
+
   const DeletePoint = () => {
     axios
       .delete(`http://localhost:5000/api/${id}`)
@@ -119,6 +131,12 @@ function EditPointPage() {
 
   const NavigateBack = () => {
     navigate(`/`);
+  };
+
+  const ResetPointValues = () => {
+    setName(data[0].name);
+    setX(data[0].x);
+    setY(data[0].y);
   };
 
   return (
@@ -175,7 +193,7 @@ function EditPointPage() {
                   className="btn btn-primary btn-lg"
                   onClick={NavigateBack}
                 >
-                  Back
+                  Back to Home
                 </Button>
               </Col>
               <Col>
@@ -183,8 +201,9 @@ function EditPointPage() {
                   variant="primary"
                   className="btn btn-primary btn-lg"
                   onClick={saveChanges}
+                  disabled={!CheckIfDataIsValid()}
                 >
-                  Save
+                  Save Changes
                 </Button>
               </Col>
               <Col>
@@ -193,7 +212,16 @@ function EditPointPage() {
                   className="btn btn-primary btn-lg"
                   onClick={DeletePoint}
                 >
-                  Delete
+                  Delete Point
+                </Button>
+              </Col>
+              <Col>
+                <Button
+                  variant="primary"
+                  className="btn btn-primary btn-lg"
+                  onClick={ResetPointValues}
+                >
+                  Reset Values
                 </Button>
               </Col>
             </Row>
