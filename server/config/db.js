@@ -1,14 +1,13 @@
 const { Pool } = require("pg");
-const dotenv = require("dotenv");
+require("dotenv").config();
 
-dotenv.config();
-
+// Create a new pool here using the connection string below
 const pool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  database: "plainpoints",
-  password: "Kindboy30@",
-  port: 5432,
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
 });
 
 // Export the query method for passing queries to the pool

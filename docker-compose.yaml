@@ -1,0 +1,56 @@
+services:
+  db:
+    image: postgres
+    container_name: postgres_db
+    environment:
+      POSTGRES_PASSWORD: Kindboy30@
+      POSTGRES_DB: plainpoints
+    volumes:
+    - postgres_data:/var/lib/postgresql/data
+    - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+    - "5432:5432"
+    networks:
+      - plainpoints-network
+      
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: plainpoints_server
+    ports:
+      - "5000:5000"
+    networks:
+      - plainpoints-network
+    depends_on:
+      - db
+  
+  client:
+    build:
+      context: ./clientfile
+      dockerfile: Dockerfile
+    container_name: plainpoints_client
+    ports:
+      - "3000:3000"
+    networks:
+      - plainpoints-network
+    depends_on:
+      - server
+      - db
+volumes:
+  postgres_data:
+  Server:
+  Client:
+
+networks:
+  plainpoints-network:
+    driver: bridge
+    
+ 
+  
+  
+
+  
+
+
+
