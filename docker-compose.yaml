@@ -2,9 +2,8 @@ services:
   db:
     image: postgres
     container_name: postgres_db
-    environment:
-      POSTGRES_PASSWORD: Kindboy30@
-      POSTGRES_DB: plainpoints
+    env_file:
+      - ./server/.env
     volumes:
     - postgres_data:/var/lib/postgresql/data
     - ./init.sql:/docker-entrypoint-initdb.d/init.sql
