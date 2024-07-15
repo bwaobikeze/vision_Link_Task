@@ -19,6 +19,8 @@ function EditPointPage() {
   const [y, setY] = useState(0); // y is a number
   const [nearstPoints, setNearstPoints] = useState([]); //  nearstPoints is an array of objects
   const [farthestPoints, setFarthestPoints] = useState([]); // farthestPoints is an array of objects
+  const [lowestPoint, setlowestPoint] = useState(); // lowestPoint is a number
+  const [highestPoint, sethighestPoint] = useState(); // highestPoint is a number
   const navigate = useNavigate();
   useEffect(() => {
     axios
@@ -96,7 +98,7 @@ function EditPointPage() {
         console.log(err);
       });
   };
-  useEffect(() => { 
+  useEffect(() => {
     // calculate the distance between two points
     const calculateDistance = (x1, y1, x2, y2) => {
       return (
@@ -118,10 +120,23 @@ function EditPointPage() {
       OtherPoints.sort(
         (a, b) => a.DistanceBewteenPoints - b.DistanceBewteenPoints
       );
-      const middleindex = Math.floor(OtherPoints.length / 2);
+      let lowestPoint = OtherPoints[0].DistanceBewteenPoints; // get the lowest point
+      setlowestPoint(lowestPoint);
 
-      setNearstPoints(OtherPoints.slice(0, middleindex));
-      setFarthestPoints(OtherPoints.slice(middleindex));
+      let highestPoint =
+        OtherPoints[OtherPoints.length - 1].DistanceBewteenPoints; // get the highest point
+      sethighestPoint(highestPoint);
+
+      setNearstPoints(
+        OtherPoints.filter(
+          (point) => point.DistanceBewteenPoints === lowestPoint
+        )
+      ); // get the nearest points
+      setFarthestPoints(
+        OtherPoints.filter(
+          (point) => point.DistanceBewteenPoints === highestPoint
+        )
+      ); // get the farthest points
     };
 
     if (OtherPoints.length > 0) {
@@ -232,7 +247,7 @@ function EditPointPage() {
       <Container className="justify-content-center mt-5">
         <Row>
           <Col>
-            <h2>Closest Points</h2>
+            <h2>Nearest Points at distance {lowestPoint} </h2>
             <Table striped bordered hover>
               <thead>
                 <tr>
@@ -255,7 +270,7 @@ function EditPointPage() {
             </Table>
           </Col>
           <Col>
-            <h2>Farthest Points</h2>
+            <h2>Farthest Points at distance {highestPoint}</h2>
             <Table striped bordered hover>
               <thead>
                 <tr>
