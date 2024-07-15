@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const port = 5000;
+const port = 8080;
 const db = require("./config/db");
 
 app.use(cors());
@@ -13,6 +13,7 @@ app.get("/api", async (req, res) => {
     const { rows } = await db.query("SELECT * FROM point ORDER BY name");
     res.status(200).json(rows);
   } catch (error) {
+    console.error(error);
     res.status(500).json(error);
   }
 });
@@ -25,6 +26,7 @@ app.get("/api/:id", async (req, res) => {
     ]);
     res.status(200).json(rows);
   } catch (error) {
+    console.error(error);
     res.status(500).json(error);
   }
 });
@@ -38,7 +40,7 @@ app.patch("/api/:id", async (req, res) => {
     );
     res.status(200).json(rows);
   } catch (error) {
-    console.log([req.body.name, req.body.x, req.body.y, req.params.id]);
+    console.error(error);
     res.status(500).json(error);
   }
 });
@@ -51,6 +53,7 @@ app.get("/api/:id/all", async (req, res) => {
     ]);
     res.status(200).json(rows);
   } catch (error) {
+    console.error(error);
     res.status(500).json(error);
   }
 });
@@ -63,6 +66,7 @@ app.delete("/api/:id", async (req, res) => {
     ]);
     res.status(200).json(rows);
   } catch (error) {
+    console.error(error);
     res.status(500).json(error);
   }
 });
@@ -76,6 +80,7 @@ app.post("/api/edit", async (req, res) => {
     );
     res.status(200).json(rows);
   } catch (error) {
+    console.error(error);
     res.status(500).json(error);
   }
 });

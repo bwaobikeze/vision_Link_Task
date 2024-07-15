@@ -2,12 +2,16 @@ const { Pool } = require("pg");
 require("dotenv").config();
 
 // Create a new pool here using the connection string below
+// console.log(process.env.DB_USER);
+// console.log(process.env.DB_HOST);
+// console.log(process.env.DB_NAME);
+// console.log(process.env.DB_PORT);
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
+  user: process.env.POSTGRES_USER,
+  host: process.env.POSTGRES_HOST,
+  database: process.env.POSTGRES_DB,
+  password: process.env.POSTGRES_PASSWORD,
+  port: process.env.POSTGRES_PORT,
 });
 
 // Export the query method for passing queries to the pool

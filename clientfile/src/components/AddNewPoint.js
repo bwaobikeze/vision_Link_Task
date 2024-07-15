@@ -8,6 +8,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { useNavigate } from "react-router-dom";
 
+
 function AddNewPoint() {
   const [name, setName] = useState("");
   const [x, setX] = useState();
@@ -15,13 +16,13 @@ function AddNewPoint() {
   const [data, setData] = useState([]);
   const [OtherPoints, setOtherPoints] = useState([]);
   const navigate = useNavigate();
+  const server = process.env.REACT_APP_SERVER;
 
   // adding a new point
   const addPoint = () => {
     axios
-      .post("http://localhost:5000/api/edit", { name, x, y })
+      .post(`${server}/api/edit`, { name, x, y })
       .then((res) => {
-        console.log(res.data);
         setData([...data, { name, x, y }]);
         navigate(`/`);
       })
@@ -33,8 +34,9 @@ function AddNewPoint() {
   // getting all the points
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api")
+      .get(`${server}/api`)
       .then((res) => {
+        if(res.data)
         setOtherPoints(res.data);
         console.log(OtherPoints);
       })

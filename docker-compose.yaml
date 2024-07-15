@@ -2,13 +2,14 @@ services:
   db:
     image: postgres
     container_name: postgres_db
-    env_file:
-      - ./server/.env
+    environment:
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: plainpoints
     volumes:
-    - postgres_data:/var/lib/postgresql/data
-    - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
-    - "5432:5432"
+      - "5432:5432"
     networks:
       - plainpoints-network
     # command: ["sh", "-c", "echo POSTGRES_PASSWORD=$DB_PASSWORD && echo POSTGRES_DB=$DB_NAME && sleep 3600"]
@@ -19,12 +20,12 @@ services:
       dockerfile: Dockerfile
     container_name: plainpoints_server
     ports:
-      - "5000:5000"
+      - "8080:8080"
     networks:
       - plainpoints-network
     depends_on:
       - db
-  
+
   client:
     build:
       context: ./clientfile
@@ -41,6 +42,7 @@ volumes:
   postgres_data:
   Server:
   Client:
+
 
 networks:
   plainpoints-network:

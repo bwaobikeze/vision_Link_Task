@@ -22,9 +22,11 @@ function EditPointPage() {
   const [lowestPoint, setlowestPoint] = useState(); // lowestPoint is a number
   const [highestPoint, sethighestPoint] = useState(); // highestPoint is a number
   const navigate = useNavigate();
+  const server = process.env.REACT_APP_SERVER;
+  
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/${id}`)
+      .get(`${server}/api/${id}`)
       .then((res) => {
         setData(res.data);
         setName(res.data[0].name);
@@ -39,7 +41,7 @@ function EditPointPage() {
   // getting all the points & setting the points to the DistancePoints class object
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/${id}/all`)
+      .get(`${server}/api/${id}/all`)
       .then((res) => {
         const points = res.data.map(
           (point) => new DistancePoints(point.name, point.x, point.y)
@@ -65,7 +67,7 @@ function EditPointPage() {
       updatedData.y = y;
     }
     axios
-      .patch(`http://localhost:5000/api/${id}`, updatedData)
+      .patch(`${server}/api/${id}`, updatedData)
       .then((res) => {
         console.log(res.data);
         navigate(`/`);
@@ -89,7 +91,7 @@ function EditPointPage() {
 
   const DeletePoint = () => {
     axios
-      .delete(`http://localhost:5000/api/${id}`)
+      .delete(`${server}/api/${id}`)
       .then((res) => {
         navigate(`/`);
         console.log(res.data);

@@ -8,12 +8,14 @@ import Container from "react-bootstrap/esm/Container";
 function HomePage() {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
+  const server = process.env.REACT_APP_SERVER;
+
   useEffect(() => {
+    console.log(server);
     axios
-      .get("http://localhost:5000/api")
+      .get(`${server}/api`)
       .then((res) => {
         setData(res.data);
-        console.log(data);
       })
       .catch((err) => {
         console.log(err);
