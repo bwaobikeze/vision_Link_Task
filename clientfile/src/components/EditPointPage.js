@@ -11,14 +11,14 @@ import { useNavigate } from "react-router-dom";
 import DistancePoints from "../models/PointsClass";
 
 function EditPointPage() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([]); // data is an array of objects
   const { id } = useParams();
-  const [name, setName] = useState("");
-  const [OtherPoints, setOtherPoints] = useState([]);
-  const [x, setX] = useState(0);
-  const [y, setY] = useState(0);
-  const [nearstPoints, setNearstPoints] = useState([]);
-  const [farthestPoints, setFarthestPoints] = useState([]);
+  const [name, setName] = useState(""); // name is a string
+  const [OtherPoints, setOtherPoints] = useState([]); // OtherPoints is an array of objects
+  const [x, setX] = useState(0); // x is a number
+  const [y, setY] = useState(0); // y is a number
+  const [nearstPoints, setNearstPoints] = useState([]); //  nearstPoints is an array of objects
+  const [farthestPoints, setFarthestPoints] = useState([]); // farthestPoints is an array of objects
   const navigate = useNavigate();
   useEffect(() => {
     axios
@@ -34,6 +34,7 @@ function EditPointPage() {
       });
   }, []);
 
+  // getting all the points & setting the points to the DistancePoints class object
   useEffect(() => {
     axios
       .get(`http://localhost:5000/api/${id}/all`)
@@ -95,7 +96,8 @@ function EditPointPage() {
         console.log(err);
       });
   };
-  useEffect(() => {
+  useEffect(() => { 
+    // calculate the distance between two points
     const calculateDistance = (x1, y1, x2, y2) => {
       return (
         Math.round(
@@ -103,7 +105,7 @@ function EditPointPage() {
         ) / 10
       );
     };
-
+    // calculate the distance between the current point and all other points
     const DistanceBewteenPoints = (x1, y1) => {
       for (let i = 0; i < OtherPoints.length; i++) {
         OtherPoints[i].DistanceBewteenPoints = calculateDistance(
@@ -120,8 +122,6 @@ function EditPointPage() {
 
       setNearstPoints(OtherPoints.slice(0, middleindex));
       setFarthestPoints(OtherPoints.slice(middleindex));
-      console.log(nearstPoints);
-      console.log(farthestPoints);
     };
 
     if (OtherPoints.length > 0) {
@@ -132,7 +132,7 @@ function EditPointPage() {
   const NavigateBack = () => {
     navigate(`/`);
   };
-
+  // reset the point values to the original values
   const ResetPointValues = () => {
     setName(data[0].name);
     setX(data[0].x);

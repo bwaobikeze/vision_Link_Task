@@ -43,6 +43,7 @@ app.patch("/api/:id", async (req, res) => {
   }
 });
 
+//
 app.get("/api/:id/all", async (req, res) => {
   try {
     const { rows } = await db.query("SELECT * FROM point WHERE id != $1", [

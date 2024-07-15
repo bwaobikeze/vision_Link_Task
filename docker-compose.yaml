@@ -12,7 +12,7 @@ services:
     - "5432:5432"
     networks:
       - plainpoints-network
-      
+
   server:
     build:
       context: ./server
@@ -45,12 +45,3 @@ volumes:
 networks:
   plainpoints-network:
     driver: bridge
-    
- 
-  
-  
-
-  
-
-
-
