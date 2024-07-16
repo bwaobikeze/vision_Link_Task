@@ -4,6 +4,7 @@ import Table from "react-bootstrap/Table";
 import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/esm/Container";
+import "./HomePage.css";
 
 function HomePage() {
   const [data, setData] = useState([]);
@@ -29,27 +30,29 @@ function HomePage() {
     <div className="App">
       <Container className="justify-content-center mt-5">
         <header>
-          <h1>Plane Points</h1>
+          <h1 className="header-title">Plane Points</h1>
         </header>
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>X</th>
-              <th>Y</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((point) => (
-              <tr key={point.id} onClick={() => handleClick(point.id)}>
-                <td>{point.name}</td>
-                <td>{point.x}</td>
-                <td>{point.y}</td>
+        <div className="table-container">
+          <Table striped bordered hover className="table-hover">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>X</th>
+                <th>Y</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
-        <div>
+            </thead>
+            <tbody>
+              {data.map((point) => (
+                <tr key={point.id} onClick={() => handleClick(point.id)}>
+                  <td>{point.name}</td>
+                  <td>{point.x}</td>
+                  <td>{point.y}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
+        <div className="add-point-button">
           <Button variant="primary" onClick={() => navigate("/edit")}>
             Add Point
           </Button>
