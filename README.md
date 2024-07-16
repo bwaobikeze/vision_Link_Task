@@ -6,6 +6,7 @@ create a simple web application to display a set of points, and allow adding, ed
 
 Before you begin, ensure you have installed the following tools:
 - Docker: [Installation](https://www.docker.com/)
+- PostgreSQL: [Installation](https://www.postgresql.org/download/)
 
 
 ## Setup Instructions
@@ -33,7 +34,7 @@ Before you begin, ensure you have installed the following tools:
 
     ```sh
     POSTGRES_USER=your_postgres_user
-    POSTGRES_HOST=db
+    POSTGRES_HOST=host.docker.internal
     POSTGRES_PASSWORD=your_postgres_password
     POSTGRES_DB=your_database_name
     POSTGRES_PORT=5432
@@ -49,3 +50,7 @@ Before you begin, ensure you have installed the following tools:
 5. **Access the Application**
 
    Once the application is running and the model is pulled, you can access it through your web browser at http://localhost:3000.
+
+## Assumptions
+ - I assumed that a PostgreSQL database already contains the table of points
+ - I assumed that the database would be ran locally

@@ -23,8 +23,7 @@ services:
 volumes:
   Server:
   Client:
-
-
+  
 networks:
   plainpoints-network:
     driver: bridge
