@@ -9,7 +9,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { useNavigate } from "react-router-dom";
 import DistancePoints from "../models/PointsClass";
-import "./EditPointPage.css";
+import Alert from "react-bootstrap/Alert";
+// import "./EditPointPage.css";
 
 function EditPointPage() {
   const [data, setData] = useState([]); // data is an array of objects
@@ -22,9 +23,11 @@ function EditPointPage() {
   const [farthestPoints, setFarthestPoints] = useState([]); // farthestPoints is an array of objects
   const [lowestPoint, setlowestPoint] = useState(); // lowestPoint is a number
   const [highestPoint, sethighestPoint] = useState(); // highestPoint is a number
+  const [DataIsNotPulled, setDataIsNotPulled] = useState(false);
+  const [MessageIfDataIsNotPulled, setMessageIfDataIsNotPulled] = useState("");
   const navigate = useNavigate();
   const server = process.env.REACT_APP_SERVER;
-  
+
   useEffect(() => {
     axios
       .get(`${server}/api/${id}`)
@@ -50,6 +53,10 @@ function EditPointPage() {
         setOtherPoints(points);
       })
       .catch((err) => {
+        setDataIsNotPulled(true);
+        setMessageIfDataIsNotPulled(
+          "Error pulling data from the server \n please check connection string & restart the server"
+        );
         console.log(err);
       });
   }, []);
@@ -74,10 +81,13 @@ function EditPointPage() {
         navigate(`/`);
       })
       .catch((err) => {
+        setDataIsNotPulled(true);
+        setMessageIfDataIsNotPulled("Error updating data");
         console.log(err);
       });
   };
 
+  // check if the data is valid
   const CheckIfDataIsValid = () => {
     if (name === "" || isNaN(x) || isNaN(y)) {
       return false;
@@ -98,6 +108,8 @@ function EditPointPage() {
         console.log(res.data);
       })
       .catch((err) => {
+        setDataIsNotPulled(true);
+        setMessageIfDataIsNotPulled("Error deleting data");
         console.log(err);
       });
   };
@@ -134,12 +146,12 @@ function EditPointPage() {
         OtherPoints.filter(
           (point) => point.DistanceBewteenPoints === lowestPoint
         )
-      ); // get the nearest points
+      ); // set the nearest points list
       setFarthestPoints(
         OtherPoints.filter(
           (point) => point.DistanceBewteenPoints === highestPoint
         )
-      ); // get the farthest points
+      ); // set the farthest points list
     };
 
     if (OtherPoints.length > 0) {
@@ -159,145 +171,148 @@ function EditPointPage() {
 
   return (
     <div className="App">
-    <Container className="justify-content-center mt-5">
-      <header>
-        <h1 className="header-title">Edit Point</h1>
-      </header>
-      <Form>
-        <Table striped bordered hover className="table-hover">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>X</th>
-              <th>Y</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((point) => (
-              <tr key={point.id}>
-                <td>
-                  <Form.Control
-                    type="text"
-                    placeholder={point.name}
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                </td>
-                <td>
-                  <Form.Control
-                    type="text"
-                    placeholder={point.x}
-                    value={x}
-                    onChange={(e) => setX(e.target.value)}
-                  />
-                </td>
-                <td>
-                  <Form.Control
-                    type="text"
-                    placeholder={point.y}
-                    value={y}
-                    onChange={(e) => setY(e.target.value)}
-                  />
-                </td>
+      <Container className="justify-content-center mt-5">
+        <Alert variant="danger" show={DataIsNotPulled}>
+          {MessageIfDataIsNotPulled}
+        </Alert>
+        <header>
+          <h1 className="header-title">Edit Point</h1>
+        </header>
+        <Form>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>X</th>
+                <th>Y</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
-        <Container className="btn-container">
-          <Row>
-            <Col>
-              <Button
-                variant="primary"
-                className="btn btn-primary btn-lg"
-                onClick={NavigateBack}
-              >
-                Back to Home
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                variant="primary"
-                className="btn btn-primary btn-lg"
-                onClick={saveChanges}
-                disabled={!CheckIfDataIsValid()}
-              >
-                Save Changes
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                variant="danger"
-                className="btn btn-danger btn-lg"
-                onClick={DeletePoint}
-              >
-                Delete Point
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                variant="secondary"
-                className="btn btn-secondary btn-lg"
-                onClick={ResetPointValues}
-              >
-                Reset Values
-              </Button>
-            </Col>
-          </Row>
-        </Container>
-      </Form>
-    </Container>
+            </thead>
+            <tbody>
+              {data.map((point) => (
+                <tr key={point.id}>
+                  <td>
+                    <Form.Control
+                      type="text"
+                      placeholder={point.name}
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                  </td>
+                  <td>
+                    <Form.Control
+                      type="text"
+                      placeholder={point.x}
+                      value={x}
+                      onChange={(e) => setX(e.target.value)}
+                    />
+                  </td>
+                  <td>
+                    <Form.Control
+                      type="text"
+                      placeholder={point.y}
+                      value={y}
+                      onChange={(e) => setY(e.target.value)}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+          <Container className="btn-container">
+            <Row>
+              <Col>
+                <Button
+                  variant="primary"
+                  className="btn btn-primary btn-lg"
+                  onClick={NavigateBack}
+                >
+                  Back to Home
+                </Button>
+              </Col>
+              <Col>
+                <Button
+                  variant="primary"
+                  className="btn btn-primary btn-lg"
+                  onClick={saveChanges}
+                  disabled={!CheckIfDataIsValid()}
+                >
+                  Save Changes
+                </Button>
+              </Col>
+              <Col>
+                <Button
+                  variant="danger"
+                  className="btn btn-danger btn-lg"
+                  onClick={DeletePoint}
+                >
+                  Delete Point
+                </Button>
+              </Col>
+              <Col>
+                <Button
+                  variant="secondary"
+                  className="btn btn-secondary btn-lg"
+                  onClick={ResetPointValues}
+                >
+                  Reset Values
+                </Button>
+              </Col>
+            </Row>
+          </Container>
+        </Form>
+      </Container>
 
-    <Container className="justify-content-center mt-5">
-      <Row>
-        <Col>
-          <h3>Nearest Points at distance {lowestPoint} </h3>
-          <Table striped bordered hover className="table-hover">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>X</th>
-                <th>Y</th>
-                <th>Distance</th>
-              </tr>
-            </thead>
-            <tbody>
-              {nearstPoints.map((point) => (
-                <tr key={point.name}>
-                  <td>{point.name}</td>
-                  <td>{point.x}</td>
-                  <td>{point.y}</td>
-                  <td>{point.DistanceBewteenPoints}</td>
+      <Container className="justify-content-center mt-5">
+        <Row>
+          <Col md={ 6}>
+            <h2>Nearest Points at distance {lowestPoint} </h2>
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>X</th>
+                  <th>Y</th>
+                  <th>Distance</th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
-        </Col>
-        <Col>
-          <h3>Farthest Points at distance {highestPoint}</h3>
-          <Table striped bordered hover className="table-hover">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>X</th>
-                <th>Y</th>
-                <th>Distance</th>
-              </tr>
-            </thead>
-            <tbody>
-              {farthestPoints.map((point) => (
-                <tr key={point.name}>
-                  <td>{point.name}</td>
-                  <td>{point.x}</td>
-                  <td>{point.y}</td>
-                  <td>{point.DistanceBewteenPoints}</td>
+              </thead>
+              <tbody>
+                {nearstPoints.map((point) => (
+                  <tr key={point.name}>
+                    <td>{point.name}</td>
+                    <td>{point.x}</td>
+                    <td>{point.y}</td>
+                    <td>{point.DistanceBewteenPoints}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </Col>
+          <Col md={ 6}>
+            <h2>Farthest Points at distance {highestPoint}</h2>
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>X</th>
+                  <th>Y</th>
+                  <th>Distance</th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
-        </Col>
-      </Row>
-    </Container>
-  </div>
+              </thead>
+              <tbody>
+                {farthestPoints.map((point) => (
+                  <tr key={point.name}>
+                    <td>{point.name}</td>
+                    <td>{point.x}</td>
+                    <td>{point.y}</td>
+                    <td>{point.DistanceBewteenPoints}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </Col>
+        </Row>
+      </Container>
+    </div>
   );
 }
 export default EditPointPage;

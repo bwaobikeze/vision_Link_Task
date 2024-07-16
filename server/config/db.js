@@ -2,6 +2,7 @@ const { Pool } = require("pg");
 require("dotenv").config();
 
 // Create a new pool here using the connection string below
+// postgres://postgres:password@localhost:5432/plane_points
 const pool = new Pool({
   user: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,

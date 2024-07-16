@@ -6,8 +6,8 @@ import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Alert from "react-bootstrap/Alert";
 import { useNavigate } from "react-router-dom";
-
 
 function AddNewPoint() {
   const [name, setName] = useState("");
@@ -15,6 +15,8 @@ function AddNewPoint() {
   const [y, setY] = useState();
   const [data, setData] = useState([]);
   const [OtherPoints, setOtherPoints] = useState([]);
+  const [DataCantBeAdded, setDataCantBeAdded] = useState(false);
+  const [MessageIfDataCantBeAdded, setMessageIfDataCantBeAdded] = useState("");
   const navigate = useNavigate();
   const server = process.env.REACT_APP_SERVER;
 
@@ -27,6 +29,10 @@ function AddNewPoint() {
         navigate(`/`);
       })
       .catch((err) => {
+        setDataCantBeAdded(true);
+        setMessageIfDataCantBeAdded(
+          "Error adding data to the server \n please check connection string to database & restart the server"
+        );
         console.log(err);
       });
   };
@@ -36,8 +42,7 @@ function AddNewPoint() {
     axios
       .get(`${server}/api`)
       .then((res) => {
-        if(res.data)
-        setOtherPoints(res.data);
+        if (res.data) setOtherPoints(res.data);
         console.log(OtherPoints);
       })
       .catch((err) => {
@@ -63,6 +68,10 @@ function AddNewPoint() {
   return (
     <div>
       <Container className="justify-content-center mt-5">
+        <Alert show={DataCantBeAdded} variant="danger">
+          <Alert.Heading>Error adding data</Alert.Heading>
+          <p>{MessageIfDataCantBeAdded}</p>
+        </Alert>
         <header>
           <h1>Add New Point</h1>
         </header>
