@@ -19,7 +19,7 @@ Before you begin, ensure you have installed the following tools:
    git clone <repository_url>
    cd <repository_directory>
 
-2. **Setting Up Environment Variables**
+2. **Setting Up Client Environment Variables**
 
     - Create a .env file in the clientfile folder with the url and port that you want the server to listen to.
 
@@ -28,7 +28,7 @@ Before you begin, ensure you have installed the following tools:
     ```sh
     REACT_APP_SERVER = http://localhost:8080
 
-3. **Setting Up Environment Variables**
+3. **Setting Up Server Environment Variables**
 
     Create a .env file in the server folder with your PostgreSQL database credentials. Replace placeholders with your actual database details:
 
