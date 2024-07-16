@@ -116,11 +116,9 @@ function EditPointPage() {
   useEffect(() => {
     // calculate the distance between two points
     const calculateDistance = (x1, y1, x2, y2) => {
+      console.log(`This is the point ${x2} & ${y2} `+Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)) );
       return (
-        Math.round(
-          Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)) * 10
-        ) / 10
-      );
+        Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
     };
     // calculate the distance between the current point and all other points
     const DistanceBewteenPoints = (x1, y1) => {
@@ -167,6 +165,10 @@ function EditPointPage() {
     setName(data[0].name);
     setX(data[0].x);
     setY(data[0].y);
+  };
+
+  const formatData = (data) => { 
+    return Math.round(data * 10) / 10;
   };
 
   return (
@@ -265,7 +267,7 @@ function EditPointPage() {
       <Container className="justify-content-center mt-5">
         <Row>
           <Col md={ 6}>
-            <h2>Nearest Points at distance {lowestPoint} </h2>
+            <h2>Nearest Points at distance {formatData(lowestPoint)} </h2>
             <Table striped bordered hover>
               <thead>
                 <tr>
@@ -281,14 +283,14 @@ function EditPointPage() {
                     <td>{point.name}</td>
                     <td>{point.x}</td>
                     <td>{point.y}</td>
-                    <td>{point.DistanceBewteenPoints}</td>
+                    <td>{formatData(point.DistanceBewteenPoints)}</td>
                   </tr>
                 ))}
               </tbody>
             </Table>
           </Col>
-          <Col md={ 6}>
-            <h2>Farthest Points at distance {highestPoint}</h2>
+          <Col md={6}>
+            <h2>Farthest Points at distance {formatData(highestPoint)}</h2>
             <Table striped bordered hover>
               <thead>
                 <tr>
@@ -304,7 +306,7 @@ function EditPointPage() {
                     <td>{point.name}</td>
                     <td>{point.x}</td>
                     <td>{point.y}</td>
-                    <td>{point.DistanceBewteenPoints}</td>
+                    <td>{formatData(point.DistanceBewteenPoints)}</td>
                   </tr>
                 ))}
               </tbody>
