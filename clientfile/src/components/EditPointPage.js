@@ -116,7 +116,6 @@ function EditPointPage() {
   useEffect(() => {
     // calculate the distance between two points
     const calculateDistance = (x1, y1, x2, y2) => {
-      console.log(`This is the point ${x2} & ${y2} `+Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)) );
       return (
         Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
     };
