@@ -30,14 +30,14 @@ Before you begin, ensure you have installed the following tools:
 
 3. **Setting Up Server Environment Variables**
 
-    Create a .env file in the server folder with your PostgreSQL database credentials. Replace placeholders with your actual database details:
+    Create a .env file in the server folder with your PostgreSQL database connection string credentials. Replace placeholders with your actual database details. "host.docker.internal" is to give docker access to your database running locally :
 
     ```sh
-    POSTGRES_USER=your_postgres_user
-    POSTGRES_HOST=host.docker.internal
-    POSTGRES_PASSWORD=your_postgres_password
-    POSTGRES_DB=your_database_name
-    POSTGRES_PORT=5432
+    POSTGRES_USER="your_postgres_user"
+    POSTGRES_HOST="host.docker.internal"
+    POSTGRES_PASSWORD="your_postgres_password"
+    POSTGRES_DB="your_database_name"
+    POSTGRES_PORT="5432"
 
 4. **Starting the Application**
 
@@ -50,6 +50,13 @@ Before you begin, ensure you have installed the following tools:
 5. **Access the Application**
 
    Once the application is running and the model is pulled, you can access it through your web browser at http://localhost:3000.
+   
+6. **Shut down the Application**
+    shut down the application using Docker Compose:
+
+    ```sh
+    docker-compose down
+
 
 ## Assumptions
  - I assumed that a PostgreSQL database already contains the table of points
