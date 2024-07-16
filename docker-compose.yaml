@@ -1,0 +1,30 @@
+services:
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: plainpoints_server
+    ports:
+      - "8080:8080"
+    networks:
+      - plainpoints-network
+
+  client:
+    build:
+      context: ./clientfile
+      dockerfile: Dockerfile
+    container_name: plainpoints_client
+    ports:
+      - "3000:3000"
+    networks:
+      - plainpoints-network
+    depends_on:
+      - server
+volumes:
+  Server:
+  Client:
+
+
+networks:
+  plainpoints-network:
+    driver: bridge
