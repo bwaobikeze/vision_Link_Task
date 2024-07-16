@@ -2,16 +2,14 @@ const { Pool } = require("pg");
 require("dotenv").config();
 
 // Create a new pool here using the connection string below
-// console.log(process.env.DB_USER);
-// console.log(process.env.DB_HOST);
-// console.log(process.env.DB_NAME);
-// console.log(process.env.DB_PORT);
+console.log(process.env.POSTGRES_C0NNECTION_STRING);
 const pool = new Pool({
-  user: process.env.POSTGRES_USER,
-  host: process.env.POSTGRES_HOST,
-  database: process.env.POSTGRES_DB,
-  password: process.env.POSTGRES_PASSWORD,
-  port: process.env.POSTGRES_PORT,
+  connectionString: process.env.POSTGRES_C0NNECTION_STRING,
+  
+  ssl: {
+    rejectUnauthorized: false, // Use this if your PostgreSQL server uses self-signed certificates or not using CA-signed certificates
+    // You can also specify other SSL options here
+  }
 });
 
 // Export the query method for passing queries to the pool

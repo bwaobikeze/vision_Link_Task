@@ -1,17 +1,4 @@
 services:
-  db:
-    image: postgres
-    container_name: postgres_db
-    env_file:
-      - ./server/.env
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    ports:
-      - "5432:5432"
-    networks:
-      - plainpoints-network
-
   server:
     build:
       context: ./server
@@ -21,8 +8,6 @@ services:
       - "8080:8080"
     networks:
       - plainpoints-network
-    depends_on:
-      - db
 
   client:
     build:
@@ -35,9 +20,7 @@ services:
       - plainpoints-network
     depends_on:
       - server
-      - db
 volumes:
-  postgres_data:
   Server:
   Client:
 
