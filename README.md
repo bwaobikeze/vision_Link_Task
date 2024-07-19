@@ -7,6 +7,14 @@ create a simple web application to display a set of points, and allow adding, ed
 Before you begin, ensure you have installed the following tools:
 - Docker: [Installation](https://www.docker.com/)
 - PostgreSQL: [Installation](https://www.postgresql.org/download/)
+- This is the Database schema that the application is expecting:
+   ```sql
+   CREATE TABLE point (
+       id SERIAL PRIMARY KEY,
+       name TEXT NOT NULL,
+       x INTEGER NOT NULL,
+       y INTEGER NOT NULL
+   );
 
 
 ## Setup Instructions

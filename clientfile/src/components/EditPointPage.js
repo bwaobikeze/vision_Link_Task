@@ -10,7 +10,6 @@ import Col from "react-bootstrap/Col";
 import { useNavigate } from "react-router-dom";
 import DistancePoints from "../models/PointsClass";
 import Alert from "react-bootstrap/Alert";
-// import "./EditPointPage.css";
 
 function EditPointPage() {
   const [data, setData] = useState([]); // data is an array of objects
@@ -116,8 +115,7 @@ function EditPointPage() {
   useEffect(() => {
     // calculate the distance between two points
     const calculateDistance = (x1, y1, x2, y2) => {
-      return (
-        Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
+      return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     };
     // calculate the distance between the current point and all other points
     const DistanceBewteenPoints = (x1, y1) => {
@@ -166,7 +164,7 @@ function EditPointPage() {
     setY(data[0].y);
   };
 
-  const formatData = (data) => { 
+  const formatData = (data) => {
     return Math.round(data * 10) / 10;
   };
 
@@ -265,7 +263,7 @@ function EditPointPage() {
 
       <Container className="justify-content-center mt-5">
         <Row>
-          <Col md={ 6}>
+          <Col md={6}>
             <h2>Nearest Points at distance {formatData(lowestPoint)} </h2>
             <Table striped bordered hover>
               <thead>
